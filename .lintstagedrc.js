@@ -1,5 +1,4 @@
-const baseConfig = require("../../.lintstagedrc.js");
-
 module.exports = {
-    ...baseConfig,
+    "*": "prettier --write --ignore-unknown",
+    "*.js,*.ts": "eslint --fix"
 };

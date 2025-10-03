@@ -1,7 +1,7 @@
 # App configurations
 app:
-    name: "facts-service"
-    platform: "tech-insights"
+    name: "fast-service"
+    platform: "node-boot"
     environment: "development"
     defaultErrorHandler: false
     port: 3000

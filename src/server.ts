@@ -1,11 +1,11 @@
-import {FactsServiceApp} from "./app";
+import {FastServiceApp} from "./app";
 
 // Starts the Node-Boot server with the application deployed
-new FactsServiceApp()
+new FastServiceApp()
     .start()
     .then(app => {
-        app.logger.debug(`FactsService started successfully at port ${app.appOptions.port}`);
+        app.logger.debug(`FastServiceApp started successfully at port ${app.appOptions.port}`);
     })
     .catch(reason => {
-        console.error(`Error starting FactsService: ${reason}`);
+        console.error(`Error starting FastServiceApp: ${reason}`);
     });

@@ -25,7 +25,7 @@ import {EnableValidations} from "@nodeboot/starter-validation";
 @EnableValidations()
 @EnableComponentScan()
 @NodeBootApplication()
-export class FactsServiceApp implements NodeBootApp {
+export class FastServiceApp implements NodeBootApp {
     start(): Promise<NodeBootAppView> {
         return NodeBoot.run(FastifyServer);
     }
