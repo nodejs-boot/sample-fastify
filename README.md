@@ -26,6 +26,7 @@ A comprehensive sample Node-Boot application using Fastify framework that demons
    #or with nodemon for hot reload
    pnpm dev
    ```
+![run](assets/run.png)
 
 3. **Access the application:**
    - API: http://localhost:3000/api
