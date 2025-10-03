@@ -30,6 +30,17 @@ A comprehensive sample Node-Boot application using Fastify framework that demons
    - Actuator Metrics/info: http://localhost:3000/actuator
    - Health Check: http://localhost:3000/actuator/health
 
+4. **Actuator Endpoints:**
+   - `/actuator/health` - Application health status
+   - `/actuator/info` - Application info
+   - `/actuator/git` - Git info
+   - `/actuator/config` - Current configuration
+   - `/actuator/metrics` - Application metrics
+   - `/actuator/prometheus` - Prometheus metrics
+   - `/actuator/controllers` - Registered controllers
+   - `/actuator/interceptors` - Registered interceptors
+   - `/actuator/middlewares` - Registered middlewares
+
 ## 📋 Available Scripts
 
 | Script                  | Description                                                    |
@@ -423,7 +434,7 @@ export class Migration1701786331338 implements MigrationInterface {
 
 #### Learn More
 
-For detailed database configuration options, visit the [Node-Boot Starter Persistence documentation](https://github.com/nodejs-boot/node-boot/tree/main/starters/persistence).
+For detailed database configuration options, visit the [Node-Boot Starter Persistence](https://github.com/nodejs-boot/node-boot/tree/main/starters/persistence).
 
 ### Testing
 - **Framework:** Jest with SWC compiler
