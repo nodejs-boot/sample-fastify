@@ -484,6 +484,11 @@ For detailed database configuration options, visit the [Node-Boot Starter Persis
    docker run -t -i fastify-sample /bin/sh
    ```
 
+## API Explorer (Swagger UI)
+Access the interactive API documentation at: [http://localhost:3000/docs](http://localhost:3000/docs)
+
+![swagger ui](assets/swagger-ui.png)
+
 ## 📚 Learn More
 
 - [Node-Boot Documentation](https://github.com/nodejs-boot)
