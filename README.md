@@ -264,6 +264,167 @@ Development server uses nodemon for automatic restarts:
 - **Migrations:** Use `pnpm create:migration` to create new migrations and then add the `@Migration` decorator to the generated migration class.
 - **Seeding:** Initial users loaded via `users.init.ts`
 
+## 🗄️ Database Configuration
+
+### Default Setup (SQLite)
+The sample uses SQLite by default for simplicity and portability. The database file (`fastify-sample.db`) is created automatically in the project root.
+
+### Switching to Other Databases
+
+The Node-Boot starter persistence package supports all TypeORM-compatible databases. You can easily switch by updating your configuration:
+
+#### Supported Databases
+- **SQL Databases:** PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle, CockroachDB
+- **NoSQL Databases:** MongoDB
+
+#### Configuration Steps
+
+1. **Install the appropriate database driver:**
+
+   ```bash
+   # PostgreSQL
+   pnpm add pg
+   pnpm add -D @types/pg
+
+   # MySQL/MariaDB
+   pnpm add mysql2
+
+   # MongoDB
+   pnpm add mongodb
+
+   # SQL Server
+   pnpm add mssql
+
+   # Oracle
+   pnpm add oracledb
+   ```
+
+2. **Update your configuration file (`app-config.yaml` or `app-config.local.yaml`):**
+   
+   **SQLite Example (default):**
+   ```yaml
+   persistence:
+    type: "better-sqlite3"
+    synchronize: false # False, meaning that the application rely on migrations
+    cache: true
+    migrationsRun: true
+    better-sqlite3:
+        database: "fastify-sample.db"
+    transactions:
+        # Controls how many hooks (`commit`, `rollback`, `complete`) can be used simultaneously.
+        # If you exceed the number of hooks of same type, you get a warning. This is a useful to find possible memory leaks.
+        # You can set this options to `0` or `Infinity` to indicate an unlimited number of listeners.
+        maxHookHandlers: 10
+        # Controls storage driver used for providing persistency during the async request timespan.
+        # You can force any of the available drivers with this option.
+        # By default, the modern AsyncLocalStorage will be preferred, if it is supported by your runtime.
+        storageDriver: "AUTO"
+   ```
+   **PostgreSQL Example:**
+   ```yaml
+   persistence:
+     type: "postgres"
+     synchronize: false # False, meaning that the application rely on migrations
+     cache: true
+     migrationsRun: true
+     postgres:
+      host: "localhost"
+      port: 5432
+      username: "your_username"
+      password: "your_password"
+      database: "your_database"
+   ```
+
+   **MySQL Example:**
+   ```yaml
+   datasource:
+     type: "mysql"
+     synchronize: false # False, meaning that the application rely on migrations
+     cache: true
+     migrationsRun: true
+     mysql:
+      host: "localhost"
+      port: 3306
+      username: "root"
+      password: "password"
+      database: "fastify_sample"
+   ```
+
+   **MongoDB Example:**
+   ```yaml
+   persistence:
+    type: "mongodb"
+    cache: false
+    mongodb:
+      database: "facts"
+      #url: mongodb://localhost:27017/?directConnection=true
+      url: mongodb+srv://${DATABASE_CREDS}@db-name.mongodb.net/?retryWrites=true&w=majority&appName=sample-fastify
+   ```
+
+3. **Environment-specific Configuration:**
+   Use `app-config.local.yaml` for local development or `app-credentials.local.yaml` for sensitive credentials:
+
+   ```yaml
+   # app-credentials.local.yaml (git-ignored)
+   postgres:
+     username: "your_username"
+     password: "your_password"
+   ```
+
+#### Production Configuration
+
+For production environments, use environment variables or secure configuration management:
+
+```yaml
+mysql:
+  username: "${DB_USERNAME}"
+  password: "${DB_PASSWORD}"
+  host: "${DB_HOST:localhost}"
+  port: "${DB_PORT:5432}"
+  database: "${DB_NAME}"
+```
+
+#### Database Features
+
+The Node-Boot starter persistence package provides:
+
+- **Automatic Connection Management** - Connections are managed automatically
+- **Transaction Support** - Use `@Transactional` decorator for transaction management
+- **Migration System** - TypeORM migrations with Node-Boot decorators
+- **Entity Event Listeners** - Lifecycle hooks for entities
+- **Repository Pattern** - Custom repositories with `@DataRepository`
+- **Connection Pooling** - Built-in connection pool management
+
+#### Migration Commands
+
+```bash
+# Create new migration
+pnpm create:migration
+```
+> **Note:** After creating the migration class, add the `@Migration` decorator to the generated class to register it. Build and run the application to execute pending migrations at bootstrap.
+
+##### Example migration class:
+
+```typescript
+import {MigrationInterface, QueryRunner} from "typeorm";
+import {Migration} from "@nodeboot/starter-persistence";
+
+@Migration()
+export class Migration1701786331338 implements MigrationInterface {
+   async up(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.query(`ALTER TABLE "nb-user" ADD COLUMN "name" varchar(255)`);
+   }
+
+   async down(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.query(`ALTER TABLE "nb-user" DROP COLUMN "name"`);
+   }
+}
+````
+
+#### Learn More
+
+For detailed database configuration options, visit the [Node-Boot Starter Persistence documentation](https://github.com/nodejs-boot/node-boot/tree/main/starters/persistence).
+
 ### Testing
 - **Framework:** Jest with SWC compiler
 - **Configuration:** `jest.config.js`
