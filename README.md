@@ -21,6 +21,9 @@ A comprehensive sample Node-Boot application using Fastify framework that demons
 
 2. **Start development server:**
    ```bash
+   pnpm star
+   
+   #or with nodemon for hot reload
    pnpm dev
    ```
 
